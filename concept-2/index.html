@@ -354,7 +354,7 @@ footer .credits a{color:#C9D8E2;text-decoration:underline}
 @media (max-width:760px){.mbar{display:flex}}
 .concept{position:fixed;right:14px;bottom:14px;z-index:80;background:#6B3FD1;color:#fff;border-radius:999px;padding:8px 14px;font-size:.75rem;font-weight:800;box-shadow:0 8px 20px rgb(0 0 0/.25)}
 .concept{text-decoration:none}.concept:hover{background:#5a2fc0}
-@media (max-width:760px){.concept{right:auto;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(82px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:760px){.concept{right:auto;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));padding:7px 12px;font-size:.72rem;transition:bottom .35s}body.mb .concept{bottom:calc(80px + env(safe-area-inset-bottom,0px))}}
 .toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:800;font-size:.9rem;z-index:130;transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 32px);text-align:center}
 .toast.show{transform:translate(-50%,0)}
 @media (max-width:760px){.toast.show{transform:translate(-50%,-70px)}}
@@ -788,7 +788,7 @@ function renderCredits(){$("#credits").innerHTML=`${L("Fotos de Wikimedia Common
 
 /* ---------- scroll effects ---------- */
 const hdr=$("#hdr"),prog=$("#progress"),mbar=$("#mbar"),bandBg=$("#bandBg");
-function onScroll(){const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(h>0?y/h*100:0)+"%";hdr.classList.toggle("solid",y>innerHeight*.6);mbar.classList.toggle("show",y>innerHeight*.8);
+function onScroll(){const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(h>0?y/h*100:0)+"%";hdr.classList.toggle("solid",y>innerHeight*.6);mbar.classList.toggle("show",y>innerHeight*.8);document.body.classList.toggle("mb",y>innerHeight*.8);
   const r=bandBg.parentNode.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)bandBg.style.transform=`translateY(${(r.top-innerHeight/2)*-.12}px)`}
 addEventListener("scroll",onScroll,{passive:true});
 addEventListener("resize",renderAud);
