@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Insumed · Cinematic Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Serif:ital@0;1&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Concept 2 · cinematic. Two audiences behind one switch: "Para empresas" (quote flow) and "Para ti" (shop + cart). Dark photographic bands, bright white working sections, Caribbean sand accent. */
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF; --tint:#F2F8FB; --ink:#0B2540; --ink-2:#23415C; --muted:#56697B; --line:#DCE7ED;
+  --cyan:#16AACB; --cyan-btn:#0B88A6; --cyan-ink:#0A6F88; --cyan-soft:#E1F4F9;
+  --sand:#F4C27A; --sand-ink:#8A5A14; --sand-soft:#FDF1DE; --night:#06182A; --ok:#14835A; --ok-soft:#DFF4EA; --warn:#A95A14; --warn-soft:#FCEBD9;
+  --f-display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
+  --f-serif:"Instrument Serif",Georgia,serif;
+  --f-body:"Manrope","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --max:1240px; --shadow:0 2px 6px rgb(11 37 64/.06),0 24px 60px rgb(11 37 64/.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.55 var(--f-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--f-display);margin:0;letter-spacing:-.025em;line-height:1.02;text-wrap:balance}
+h2{font-size:clamp(2.1rem,4.6vw,3.6rem);font-weight:800}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+img{max-width:100%}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:8px}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.serif{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:800 .75rem/1.3 var(--f-body);letter-spacing:.16em;text-transform:uppercase;color:var(--cyan-ink)}
+.eyebrow::before{content:"";width:22px;height:2px;background:currentColor;flex:none}
+.on-dark .eyebrow{color:var(--sand)}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.btn{position:relative;display:inline-flex;align-items:center;gap:12px;border:0;border-radius:999px;padding:17px 28px;font-weight:800;font-size:1.02rem;text-decoration:none;white-space:nowrap;transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s,background .2s}
+.btn svg{transition:transform .2s}
+.btn:hover svg{transform:translateX(4px)}
+.btn-cta{background:var(--sand);color:var(--night);box-shadow:0 12px 34px rgb(244 194 122/.35)}
+.btn-cta:hover{box-shadow:0 16px 44px rgb(244 194 122/.55)}
+.btn-primary{background:var(--cyan-btn);color:#fff;box-shadow:0 10px 26px rgb(11 136 166/.3)}
+.btn-glass{background:rgb(255 255 255/.12);color:#fff;border:1.5px solid rgb(255 255 255/.35);backdrop-filter:blur(8px)}
+.btn-glass:hover{background:rgb(255 255 255/.2)}
+.btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.reveal{transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1)}
+.reveal.pre{opacity:0;transform:translateY(28px)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 currentColor}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes popin{from{transform:scale(0)}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+
+/* audience modes */
+body[data-mode="biz"] .only-home,body[data-mode="home"] .only-biz{display:none!important}
+
+/* progress + header */
+.progress{position:fixed;left:0;top:0;height:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--sand));z-index:100}
+header.site{position:fixed;left:0;right:0;top:0;z-index:60;padding-top:env(safe-area-inset-top,0px);transition:background .3s,box-shadow .3s,color .3s;color:#fff}
+header.site.solid{background:rgb(255 255 255/.94);backdrop-filter:blur(14px);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+header.site .wrap{display:flex;align-items:center;gap:16px;padding-block:14px}
+.brand{display:flex;flex-direction:column;line-height:1;text-decoration:none}
+.brand b{font:800 1.5rem/1 var(--f-display);letter-spacing:.02em}
+.brand b i{font-style:normal;color:var(--cyan)}
+.brand small{font-size:.66rem;opacity:.75;letter-spacing:.05em;margin-top:3px;white-space:nowrap}
+.aud{display:inline-flex;position:relative;background:rgb(255 255 255/.14);border:1.5px solid rgb(255 255 255/.3);border-radius:999px;padding:4px;backdrop-filter:blur(8px)}
+header.site.solid .aud{background:var(--tint);border-color:var(--line)}
+.aud button{position:relative;z-index:1;border:0;background:none;border-radius:999px;padding:9px 16px;font-weight:800;font-size:.88rem;color:inherit;white-space:nowrap;transition:color .25s}
+.aud button[aria-pressed="true"]{color:var(--night)}
+.aud .pill{position:absolute;top:4px;bottom:4px;left:4px;border-radius:999px;background:var(--sand);transition:left .35s cubic-bezier(.3,1.3,.5,1),width .35s cubic-bezier(.3,1.3,.5,1);box-shadow:0 4px 14px rgb(244 194 122/.4)}
+nav.main{display:flex;gap:2px}
+nav.main a{text-decoration:none;font-weight:700;font-size:.9rem;padding:8px 11px;border-radius:999px;opacity:.85;white-space:nowrap}
+nav.main a:hover{opacity:1;background:rgb(127 127 127/.14)}
+.hdr-r{margin-left:auto;display:flex;gap:10px;align-items:center}
+.lang{display:inline-flex;border:1.5px solid currentColor;border-radius:999px;padding:3px;opacity:.9}
+.lang button{border:0;background:none;border-radius:999px;padding:5px 10px;font-weight:800;font-size:.78rem;color:inherit}
+.lang button[aria-pressed="true"]{background:currentColor}
+.lang button[aria-pressed="true"] span{color:var(--night)}
+header.site.solid .lang button[aria-pressed="true"] span{color:#fff}
+.tray{position:relative;display:inline-flex;align-items:center;gap:8px;border:1.5px solid currentColor;border-radius:999px;padding:9px 14px;font-weight:800;font-size:.86rem;background:none;color:inherit}
+.tray b{min-width:22px;height:22px;border-radius:99px;background:var(--sand);color:var(--night);display:grid;place-items:center;font-size:.75rem;transition:transform .3s cubic-bezier(.3,1.7,.5,1);padding:0 5px}
+.tray b.bump{transform:scale(1.4)}
+.hdr-cta{padding:12px 20px;font-size:.92rem}
+@media (max-width:1380px){nav.main{display:none}}
+@media (max-width:760px){
+  header.site .wrap{flex-wrap:wrap;gap:10px;padding-block:10px}
+  .aud{order:3;width:100%;display:grid;grid-template-columns:1fr 1fr}
+  .aud button{padding:8px 10px}
+  .hdr-cta{display:none}.tray span{display:none}
+}
+
+/* hero */
+.hero{position:relative;min-height:max(680px,min(100svh,940px));display:flex;align-items:flex-end;color:#fff;overflow:hidden;background:var(--night)}
+.hero .bg{position:absolute;inset:0}
+.hero .bg figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity 1.6s ease}
+.hero .bg figure.on{opacity:1}
+.hero .bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);transition:transform 9s linear}
+.hero .bg figure.on img{transform:scale(1.0)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(6 24 42/.6) 0%,rgb(6 24 42/.15) 35%,rgb(6 24 42/.75) 78%,rgb(6 24 42/.95) 100%),linear-gradient(90deg,rgb(6 24 42/.72),transparent 65%)}
+.hero .in{position:relative;z-index:2;width:100%;padding-block:130px 40px}
+.hero h1{font-size:clamp(2.6rem,6.2vw,5.4rem);font-weight:800;max-width:16ch}
+.hero h1 .serif{font-size:1.06em}
+.hero h1 .gold{color:var(--sand)}
+.rot{display:inline-grid;vertical-align:bottom}
+.rot span{grid-area:1/1;transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1);color:var(--cyan);white-space:nowrap}
+.rot span:not(.on){opacity:0;transform:translateY(40%)}
+.hero .lede{font-size:clamp(1.05rem,1.6vw,1.25rem);max-width:56ch;opacity:.9;margin-top:22px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+.hero-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:18px;margin-top:40px;padding-top:20px;border-top:1px solid rgb(255 255 255/.18)}
+.proof{display:flex;flex-wrap:wrap;gap:10px 28px;font-weight:700;font-size:.92rem}
+.proof span{display:inline-flex;align-items:center;gap:8px;opacity:.92}
+.proof i{width:8px;height:8px;border-radius:50%;background:var(--sand)}
+.where{display:flex;align-items:center;gap:12px;font-size:.85rem}
+.where .pin{width:10px;height:10px;border-radius:50%;background:var(--cyan);color:var(--cyan);animation:pulse 2s infinite}
+.where b{font-weight:800}
+.where .dots{display:flex;gap:6px;margin-left:8px}
+.where .dots button{width:26px;height:4px;border-radius:4px;border:0;background:rgb(255 255 255/.3);padding:0;overflow:hidden;position:relative}
+.where .dots button.on::after{content:"";position:absolute;inset:0;background:#fff;transform-origin:left;animation:fillx 6s linear forwards}
+@keyframes fillx{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.hero-swap{transition:opacity .35s,transform .35s}
+.hero-swap.out{opacity:0;transform:translateY(12px)}
+@media (max-width:760px){.hero .in{padding-top:150px}}
+
+/* ticker */
+.ticker{background:var(--night);color:#fff;overflow:hidden;padding-block:18px;border-top:1px solid rgb(255 255 255/.08)}
+.ticker .t{display:flex;gap:42px;width:max-content;animation:tick 44s linear infinite;align-items:center}
+.ticker:hover .t{animation-play-state:paused}
+.ticker span{font:700 1.15rem var(--f-display);white-space:nowrap;display:inline-flex;align-items:center;gap:42px;opacity:.9}
+.ticker span::after{content:"✦";color:var(--sand);font-size:.8rem}
+.ticker em{font:italic 400 1.35rem var(--f-serif);color:var(--sand);white-space:nowrap}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+.sec{padding-block:clamp(70px,9vw,120px)}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:18px 40px;margin-bottom:40px}
+.sec-head h2{margin-top:14px}
+.sec-head p{color:var(--muted);max-width:46ch;font-size:1.05rem}
+.tint{background:var(--tint)}
+
+/* map */
+.mapgrid{display:grid;grid-template-columns:1.25fr .75fr;gap:26px;align-items:stretch}
+@media (max-width:960px){.mapgrid{grid-template-columns:1fr}}
+.mapbox{position:relative;background:linear-gradient(180deg,#EAF6FA,#F7FBFD);border:1px solid var(--line);border-radius:28px;overflow:hidden;min-width:0}
+.mapbox svg{display:block;width:100%;height:auto}
+.mapbox .sea-lbl{font:italic 400 22px var(--f-serif);fill:#7FB5C6}
+.mapbox .land{fill:#fff;stroke:#BCD9E3;stroke-width:2}
+.mapbox .haiti{fill:#EEF3F5;stroke:#D5E2E8;stroke-width:1.5}
+.mapbox .route{fill:none;stroke:var(--cyan);stroke-width:1.6;stroke-dasharray:4 6;opacity:.35;transition:opacity .3s,stroke-width .3s}
+.mapbox .route.on{opacity:1;stroke-width:3;stroke-dasharray:10 8;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-18}}
+.mapbox .city{cursor:pointer}
+.mapbox .city circle.dot{fill:var(--ink);stroke:#fff;stroke-width:3;transition:fill .2s}
+.mapbox .city circle.halo{fill:var(--cyan);opacity:0}
+.mapbox .city text{font:700 15px var(--f-body);fill:var(--ink-2);paint-order:stroke;stroke:#fff;stroke-width:5px;stroke-linejoin:round}
+.mapbox .city:hover circle.dot,.mapbox .city.on circle.dot{fill:var(--cyan)}
+.mapbox .city.on circle.halo{opacity:.25;animation:halo 1.6s infinite}
+@keyframes halo{0%{r:8}100%{r:30;opacity:0}}
+.mapbox .hq circle.dot{fill:var(--sand-ink)}
+.mapbox .hq text{font-weight:800;fill:var(--ink)}
+.mapbox .legend{position:absolute;left:18px;bottom:16px;display:flex;gap:14px;flex-wrap:wrap;font-size:.78rem;font-weight:700;color:var(--muted)}
+.mapbox .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.citycard{position:relative;border-radius:28px;overflow:hidden;background:var(--night);color:#fff;display:flex;flex-direction:column;min-height:460px;box-shadow:var(--shadow)}
+.citycard .ph{position:relative;height:210px;overflow:hidden}
+.citycard .ph img{width:100%;height:100%;object-fit:cover}
+.citycard .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,var(--night))}
+.citycard .ph .noimg{position:absolute;inset:0;background:radial-gradient(400px 200px at 30% 30%,#16AACB55,transparent),linear-gradient(135deg,#0B2540,#06182A)}
+.citycard .body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.citycard h3{font-size:2rem}
+.citycard .km{font:700 .85rem var(--f-mono);color:var(--sand)}
+.citycard .rows{display:grid;gap:8px;margin-top:4px}
+.citycard .rows div{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgb(255 255 255/.12);padding-top:9px;font-size:.92rem}
+.citycard .rows span{opacity:.7}
+.citycard .rows b{text-align:right}
+.citycard .btn{margin-top:auto;justify-content:center;white-space:normal;text-align:center}
+.citypick{display:none;margin-bottom:14px}
+.citypick select{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:13px 14px;font-weight:700;background:#fff}
+@media (max-width:640px){.citypick{display:block}.mapbox .city text{font-size:20px}}
+
+/* story */
+.story{background:var(--night);color:#fff}
+.story .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px}
+@media (max-width:900px){.story .grid{grid-template-columns:1fr}}
+.stage{position:sticky;top:90px;height:min(76vh,640px);border-radius:28px;overflow:hidden;align-self:start}
+@media (max-width:900px){.stage{position:relative;top:0;height:300px}}
+.stage figure{position:absolute;inset:0;margin:0;opacity:0;transition:opacity .8s,transform 1.4s;transform:scale(1.06)}
+.stage figure.on{opacity:1;transform:none}
+.stage img{width:100%;height:100%;object-fit:cover}
+.stage figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgb(6 24 42/.85))}
+.stage figcaption{position:absolute;left:20px;bottom:18px;z-index:2;font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.stage figcaption i{width:8px;height:8px;border-radius:50%;background:var(--sand)}
+.stage .count{position:absolute;right:20px;top:18px;z-index:2;font:700 .9rem var(--f-mono);background:rgb(0 0 0/.35);backdrop-filter:blur(6px);padding:6px 10px;border-radius:10px}
+.steps{display:flex;flex-direction:column}
+.step{min-height:min(70vh,560px);display:flex;flex-direction:column;justify-content:center;gap:14px;padding-block:30px;opacity:.35;transition:opacity .5s}
+.step.on{opacity:1}
+.step .n{font:700 .9rem var(--f-mono);color:var(--sand)}
+.step h3{font-size:clamp(2rem,3.6vw,3rem);font-weight:800}
+.step p{font-size:1.08rem;opacity:.82;max-width:44ch}
+.step .tags{display:flex;gap:8px;flex-wrap:wrap}
+.step .tags span{border:1px solid rgb(255 255 255/.25);border-radius:999px;padding:5px 12px;font-size:.8rem;font-weight:700}
+@media (max-width:900px){.step{min-height:0;opacity:1;padding-block:24px;border-top:1px solid rgb(255 255 255/.12)}}
+
+/* product cards (shared) */
+.prods{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;perspective:1000px}
+@media (max-width:1000px){.prods{grid-template-columns:repeat(2,1fr)}}
+.tcard{position:relative;background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;transform-style:preserve-3d;transition:transform .15s ease-out,box-shadow .3s;will-change:transform;display:flex;flex-direction:column}
+.tcard:hover{box-shadow:var(--shadow)}
+.tcard .glare{position:absolute;inset:0;pointer-events:none;background:radial-gradient(400px circle at var(--gx,50%) var(--gy,50%),rgb(255 255 255/.55),transparent 40%);opacity:0;transition:opacity .3s;z-index:3}
+.tcard:hover .glare{opacity:1}
+.tcard .pi{position:relative;aspect-ratio:1;background:#fff;display:grid;place-items:center;transform:translateZ(30px)}
+.tcard .pi img{width:78%;height:78%;object-fit:contain;transition:transform .4s}
+.tcard:hover .pi img{transform:scale(1.08)}
+.tcard .badge{position:absolute;left:12px;top:12px;background:var(--sand-soft);color:var(--sand-ink);border-radius:999px;padding:4px 10px;font-size:.72rem;font-weight:800}
+.tcard .pb{padding:14px 16px 16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px;transform:translateZ(20px);flex:1}
+.tcard .pc{font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--cyan-ink)}
+.tcard .pn{font-weight:800;font-size:.95rem;line-height:1.25;min-height:2.5em}
+.tcard .pr{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;padding-top:4px}
+.tcard .pr b{font:700 1.05rem var(--f-mono)}
+.addq{border:0;border-radius:999px;padding:9px 14px;font-weight:800;font-size:.82rem;background:var(--cyan-soft);color:var(--cyan-ink);transition:all .2s;white-space:nowrap}
+.addq:hover{background:var(--cyan-btn);color:#fff}
+.addq.done{background:var(--ok);color:#fff}
+.fly{position:fixed;z-index:120;width:54px;height:54px;border-radius:14px;background:#fff;box-shadow:var(--shadow);pointer-events:none;transition:transform .7s cubic-bezier(.5,-0.2,.6,1),opacity .7s}
+.fly img{width:100%;height:100%;object-fit:contain;padding:6px}
+
+/* home: situations */
+.situ{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.situ{grid-template-columns:1fr 1fr}}
+.situ button{position:relative;border:0;border-radius:22px;overflow:hidden;min-height:210px;padding:18px;color:#fff;text-align:left;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate;transition:transform .25s,box-shadow .25s}
+.situ button img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .8s}
+.situ button::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgb(6 24 42/.05),rgb(6 24 42/.85))}
+.situ button:hover img{transform:scale(1.06)}
+.situ button[aria-pressed="true"]{box-shadow:0 0 0 4px var(--sand),var(--shadow);transform:translateY(-4px)}
+.situ b{font:800 1.3rem/1.1 var(--f-display)}
+.situ small{opacity:.85;font-size:.85rem;margin-top:4px}
+.situ .tick{position:absolute;right:14px;top:14px;width:30px;height:30px;border-radius:50%;background:var(--sand);color:var(--night);display:grid;place-items:center;font-weight:800;opacity:0;transform:scale(.4);transition:all .3s cubic-bezier(.3,1.7,.5,1)}
+.situ button[aria-pressed="true"] .tick{opacity:1;transform:none}
+.kitbar{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+.kitbar .top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:end;margin-bottom:16px}
+.kitbar h3{font-size:1.5rem}
+.kitbar .top p{color:var(--muted);font-size:.93rem;margin-top:4px;max-width:60ch}
+.kitrow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+@media (max-width:1000px){.kitrow{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:520px){.kitrow{grid-template-columns:repeat(2,1fr)}}
+.kit{position:relative;border:1.5px solid var(--line);border-radius:16px;padding:10px;display:flex;flex-direction:column;gap:6px;animation:rise .4s both;cursor:pointer;transition:border-color .2s,opacity .2s}
+.kit.on{border-color:var(--cyan)}
+.kit.off{opacity:.45}
+.kit img{width:100%;aspect-ratio:1;object-fit:contain}
+.kit span{font-size:.78rem;font-weight:700;line-height:1.25}
+.kit b{font:700 .85rem var(--f-mono)}
+.kit input{position:absolute;right:10px;top:10px;width:20px;height:20px;accent-color:var(--cyan-btn)}
+.kitfoot{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.kitfoot small{color:var(--muted);font-weight:700}
+.kitfoot .t{font:700 1.5rem var(--f-mono)}
+
+/* home: how to buy */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:860px){.how{grid-template-columns:1fr}}
+.how div{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column;gap:10px}
+.how .n{width:44px;height:44px;border-radius:14px;background:var(--sand-soft);color:var(--sand-ink);display:grid;place-items:center;font:800 1.1rem var(--f-mono)}
+.how h3{font-size:1.3rem}
+.how p{color:var(--muted);font-size:.95rem}
+.faqmini{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+@media (max-width:860px){.faqmini{grid-template-columns:1fr}}
+.faqmini div{border-radius:18px;background:var(--tint);padding:18px;font-size:.92rem}
+.faqmini b{display:block;margin-bottom:4px}
+.faqmini span{color:var(--muted)}
+
+/* DR band */
+.band{position:relative;min-height:620px;display:flex;align-items:center;color:#fff;overflow:hidden}
+.band .bgp{position:absolute;inset:-12% 0;background-size:cover;background-position:center;will-change:transform}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgb(6 24 42/.82),rgb(6 24 42/.35) 60%,transparent)}
+.band .in{position:relative;z-index:2;max-width:640px}
+.band h2{font-size:clamp(2.4rem,5.4vw,4.6rem)}
+.band h2 .serif{color:var(--sand)}
+.band p{font-size:1.12rem;opacity:.88;margin-top:18px;max-width:46ch}
+.band .stats{display:flex;gap:30px;flex-wrap:wrap;margin-top:34px}
+.band .stats div b{display:block;font:800 2.8rem/1 var(--f-display);color:#fff}
+.band .stats div span{font-size:.85rem;opacity:.8}
+.band .credit{position:absolute;right:16px;bottom:12px;z-index:2;font-size:.7rem;opacity:.7}
+
+/* segments */
+.segs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:900px){.segs{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.segs{grid-template-columns:1fr}}
+.seg{position:relative;border-radius:22px;overflow:hidden;min-height:230px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;isolation:isolate;text-decoration:none}
+.seg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1s}
+.seg::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgb(6 24 42/.1),rgb(6 24 42/.88))}
+.seg:hover img{transform:scale(1.07)}
+.seg h3{font-size:1.5rem}
+.seg p{font-size:.9rem;opacity:.85;margin-top:6px;max-height:0;overflow:hidden;transition:max-height .4s}
+.seg:hover p,.seg:focus-visible p{max-height:80px}
+.seg .go{position:absolute;right:18px;top:18px;width:40px;height:40px;border-radius:50%;background:rgb(255 255 255/.18);backdrop-filter:blur(6px);display:grid;place-items:center;transition:background .2s,transform .2s}
+.seg:hover .go{background:var(--sand);color:var(--night);transform:rotate(-45deg)}
+@media (hover:none){.seg p{max-height:80px}}
+
+/* final (biz quote / home checkout) */
+.final{position:relative;color:#fff;overflow:hidden;padding-block:clamp(80px,10vw,140px)}
+.final>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.final::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgb(6 24 42/.92),rgb(6 24 42/.6))}
+.final .grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media (max-width:900px){.final .grid{grid-template-columns:1fr}}
+.final .grid>*{min-width:0}
+.final h2{font-size:clamp(2.4rem,5vw,4.2rem)}
+.final h2 .serif{color:var(--sand)}
+.final .lede{font-size:1.1rem;opacity:.88;margin-top:18px;max-width:44ch}
+.final .contact{display:flex;flex-wrap:wrap;gap:12px 26px;margin-top:28px;font-weight:700}
+.final .contact span{opacity:.75;font-weight:600;margin-right:6px}
+.panel{background:#fff;color:var(--ink);border-radius:26px;padding:26px;box-shadow:0 40px 90px rgb(0 0 0/.35);min-width:0}
+.panel h3{font-size:1.5rem}
+.panel .sub{color:var(--muted);font-size:.9rem;margin:4px 0 16px}
+.panel .f{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:480px){.panel .f{grid-template-columns:1fr}}
+.panel label{display:flex;flex-direction:column;gap:5px;font-size:.78rem;font-weight:800;color:var(--muted)}
+.panel input,.panel textarea,.panel select{border:1.5px solid var(--line);border-radius:12px;padding:12px;font-weight:600;color:var(--ink);background:#fff;min-width:0}
+.panel input:focus,.panel textarea:focus,.panel select:focus{outline:none;border-color:var(--cyan)}
+.panel .full{grid-column:1/-1}
+.panel .chips{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.panel .chips span{display:inline-flex;align-items:center;gap:6px;background:var(--cyan-soft);color:var(--cyan-ink);border-radius:999px;padding:5px 6px 5px 12px;font-size:.8rem;font-weight:800}
+.panel .chips button{border:0;background:#fff;border-radius:50%;width:20px;height:20px;font-size:.8rem;line-height:1;color:var(--cyan-ink)}
+.panel .chips em{font-style:normal;color:var(--muted);font-size:.82rem;align-self:center}
+.panel>.btn,.panel .btn.wide{width:100%;justify-content:center;margin-top:16px;white-space:normal;text-align:center}
+.panel .ok{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:30px 10px}
+.panel .ok .check{width:70px;height:70px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;font-size:2rem;animation:popin .5s cubic-bezier(.3,1.7,.5,1)}
+.cline{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.cline img{width:48px;height:48px;object-fit:contain;border:1px solid var(--line);border-radius:10px}
+.cline .nm{font-size:.86rem;font-weight:700;line-height:1.25}
+.cline .st{display:flex;gap:6px;align-items:center;margin-top:4px}
+.cline .st button{width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:#fff;font-weight:800;line-height:1}
+.cline b{font:700 .9rem var(--f-mono)}
+.ship-bar{margin-top:14px;font-size:.85rem;color:var(--muted)}
+.ship-bar .bar{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px}
+.ship-bar .bar i{display:block;height:100%;background:var(--sand);transition:width .4s}
+.totrow{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.totrow b{font:800 1.5rem var(--f-mono)}
+.paybadges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:.75rem;font-weight:800;color:var(--muted)}
+.paybadges span{border:1px solid var(--line);border-radius:8px;padding:4px 8px}
+
+footer{background:var(--night);color:#9FB6C6;font-size:.86rem}
+footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:28px;padding-block:48px 26px}
+@media (max-width:760px){footer .wrap{grid-template-columns:1fr}}
+footer b{color:#fff;display:block;margin-bottom:8px}
+footer .brand b{font-size:1.5rem}
+footer a{text-decoration:none}
+footer a:hover{color:#fff}
+footer .credits{grid-column:1/-1;border-top:1px solid rgb(255 255 255/.1);padding-top:16px;font-size:.72rem;line-height:1.6}
+footer .credits a{color:#C9D8E2;text-decoration:underline}
+
+/* sticky mobile CTA, concept tag, toast */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;gap:10px;padding:10px max(14px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));background:rgb(255 255 255/.95);backdrop-filter:blur(12px);border-top:1px solid var(--line);transform:translateY(110%);transition:transform .35s}
+.mbar.show{transform:none}
+.mbar .btn{flex:1;justify-content:center;padding:14px 16px;font-size:.95rem}
+.mbar .wa{background:#1FAF5B;color:#fff;flex:0 0 auto}
+@media (max-width:760px){.mbar{display:flex}}
+.concept{position:fixed;right:14px;bottom:14px;z-index:80;background:#6B3FD1;color:#fff;border-radius:999px;padding:8px 14px;font-size:.75rem;font-weight:800;box-shadow:0 8px 20px rgb(0 0 0/.25)}
+.concept{text-decoration:none}.concept:hover{background:#5a2fc0}
+@media (max-width:760px){.concept{right:auto;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(82px + env(safe-area-inset-bottom,0px))}}
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translate(-50%,160px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:800;font-size:.9rem;z-index:130;transition:transform .35s cubic-bezier(.2,.8,.2,1);max-width:calc(100% - 32px);text-align:center}
+.toast.show{transform:translate(-50%,0)}
+@media (max-width:760px){.toast.show{transform:translate(-50%,-70px)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal.pre{opacity:1;transform:none}}
+</style>
+</head>
+<body data-mode="biz">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="arr" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="wa" viewBox="0 0 24 24"><path d="M4 20l1.3-3.9A8 8 0 1 1 8 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="bag" viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7zM9 7a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="doc" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+</svg>
+<div class="progress" id="progress"></div>
+<a class="concept" href="../" data-i="concept">← Ver Concepto 1</a>
+
+<header class="site" id="hdr"><div class="wrap">
+  <a class="brand" href="#top"><b>INSU<i>MED</i></b><small>Insumos Médicos del Caribe</small></a>
+  <div class="aud" role="group" aria-label="Tipo de cliente" id="aud">
+    <span class="pill" id="audPill"></span>
+    <button type="button" data-m="biz" aria-pressed="true"><span data-i="tabBiz">Para empresas</span></button>
+    <button type="button" data-m="home" aria-pressed="false"><span data-i="tabHome">Para ti</span></button>
+  </div>
+  <nav class="main" id="nav"></nav>
+  <div class="hdr-r">
+    <div class="lang" role="group" aria-label="Idioma"><button type="button" data-lang="es" aria-pressed="true"><span>ES</span></button><button type="button" data-lang="en" aria-pressed="false"><span>EN</span></button></div>
+    <button class="tray" type="button" id="trayBtn"><svg width="16" height="16"><use href="#doc" id="trayIc"/></svg><span id="trayL"></span><b id="trayN">0</b></button>
+    <a class="btn btn-cta hdr-cta" id="hdrCta" href="#cotizar"></a>
+  </div>
+</div></header>
+
+<main id="top">
+<section class="hero on-dark">
+  <div class="bg" id="heroBg"></div>
+  <div class="wrap in">
+    <div class="hero-swap" id="heroSwap">
+      <span class="eyebrow" id="heroEy"></span>
+      <h1 style="margin-top:20px" id="heroH1"></h1>
+      <p class="lede" id="heroP"></p>
+      <div class="ctas" id="heroCtas"></div>
+    </div>
+    <div class="hero-foot">
+      <div class="proof" id="proof"></div>
+      <div class="where"><span class="pin"></span><span><b id="whereT"></b> · <span id="whereS"></span></span><div class="dots" id="heroDots"></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="t" id="ticker"></div></div>
+
+<!-- HOME: situations -->
+<section class="sec only-home" id="situaciones">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i="siEy">Compra por situación</span><h2><span data-i="siH1">¿A quién estás</span> <span class="serif" data-i="siH2">cuidando?</span></h2></div>
+      <p data-i="siP">Elige la situación y te mostramos lo que más compran otras familias. Quita lo que no necesitas y añade todo al carrito.</p>
+    </div>
+    <div class="situ" id="situ"></div>
+    <div class="kitbar" id="kitbar" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- HOME: shop -->
+<section class="sec tint only-home" id="tienda">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i="shEy">Tienda en línea</span><h2><span data-i="shH1">Lo más vendido</span> <span class="serif" data-i="shH2">para el hogar.</span></h2></div>
+      <p data-i="shP">Precios en pesos dominicanos. Paga con tarjeta y recíbelo en tu casa.</p>
+    </div>
+    <div class="prods" id="shop"></div>
+    <div style="display:flex;justify-content:center;margin-top:34px"><a class="btn btn-ghost" href="#tienda"><span data-i="shAll">Ver los 53 productos</span><svg width="18" height="18"><use href="#arr"/></svg></a></div>
+  </div>
+</section>
+
+<section class="sec" id="mapa">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i="mapEy">De Santo Domingo a todo el país</span><h2><span data-i="mapH1">Toca tu ciudad.</span><br><span class="serif" data-i="mapH2">Allá llegamos.</span></h2></div>
+      <p id="mapP"></p>
+    </div>
+    <div class="citypick"><select id="citySel" aria-label="Ciudad"></select></div>
+    <div class="mapgrid">
+      <div class="mapbox reveal" id="mapbox"></div>
+      <aside class="citycard reveal" id="citycard" aria-live="polite"></aside>
+    </div>
+  </div>
+</section>
+
+<!-- BIZ: story -->
+<section class="story on-dark only-biz" id="historia">
+  <div class="wrap sec">
+    <div class="sec-head reveal" style="margin-bottom:10px">
+      <div><span class="eyebrow" data-i="stEy">Cómo trabajamos</span><h2 style="color:#fff"><span data-i="stH1">Del puerto de Caucedo</span><br><span class="serif" style="color:var(--sand)" data-i="stH2">a tu quirófano.</span></h2></div>
+    </div>
+    <div class="grid">
+      <div class="stage" id="stage">
+        <figure class="on"><img src="photos/port1.jpg" alt=""><figcaption><i></i>Puerto Multimodal Caucedo, Boca Chica</figcaption></figure>
+        <figure><img src="photos/hall1.jpg" alt=""><figcaption><i></i><span data-i="cap2">Control y almacén</span></figcaption></figure>
+        <figure><img src="photos/sd5.jpg" alt=""><figcaption><i></i>Malecón, Santo Domingo</figcaption></figure>
+        <figure><img src="photos/or4.jpg" alt=""><figcaption><i></i><span data-i="cap4">Listo para usar</span></figcaption></figure>
+        <span class="count mono" id="stCount">01 / 04</span>
+      </div>
+      <div class="steps" id="steps">
+        <div class="step on"><span class="n">01</span><h3 data-i="s1h">Importamos</h3><p data-i="s1p">Traemos insumos con estándares internacionales directamente al país. Sin intermediarios, mejor precio para tu institución.</p><div class="tags"><span data-i="s1t1">Estándares internacionales</span><span data-i="s1t2">Sin intermediarios</span></div></div>
+        <div class="step"><span class="n">02</span><h3 data-i="s2h">Verificamos y almacenamos</h3><p data-i="s2p">Cada producto llega nuevo, con su garantía, y queda listo en nuestro almacén de Santo Domingo.</p><div class="tags"><span data-i="s2t1">Productos nuevos</span><span data-i="s2t2">Garantía</span></div></div>
+        <div class="step"><span class="n">03</span><h3 data-i="s3h">Cotizamos y despachamos</h3><p data-i="s3p">Tu asesor confirma precios por volumen y disponibilidad. Entregamos en Santo Domingo y enviamos a las 32 provincias.</p><div class="tags"><span data-i="s3t1">Precio por volumen</span><span data-i="s3t2">32 provincias</span></div></div>
+        <div class="step"><span class="n">04</span><h3 data-i="s4h">Llega a tu institución</h3><p data-i="s4p">Pago contra entrega, transferencia o crédito empresarial. Tu equipo sigue atendiendo pacientes sin interrupciones.</p><div class="tags"><span data-i="s4t1">Crédito empresarial</span><span data-i="s4t2">Contra entrega</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIZ: products -->
+<section class="sec only-biz" id="productos">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i="prEy">Lo más pedido</span><h2><span data-i="prH1">Arma tu cotización</span> <span class="serif" data-i="prH2">mientras navegas.</span></h2></div>
+      <p data-i="prP">Toca “Agregar” y los productos van a tu cotización. Al final la envías con un clic.</p>
+    </div>
+    <div class="prods" id="prods"></div>
+    <div style="display:flex;justify-content:center;margin-top:34px"><a class="btn btn-ghost" href="#cotizar"><span data-i="prAll">Ver catálogo completo (53 productos)</span><svg width="18" height="18"><use href="#arr"/></svg></a></div>
+  </div>
+</section>
+
+<section class="band" id="rd">
+  <div class="bgp" id="bandBg" style="background-image:url('photos/sa1.jpg')"></div>
+  <div class="wrap in">
+    <span class="eyebrow" style="color:var(--sand)" data-i="rdEy">Empresa dominicana</span>
+    <h2 style="margin-top:14px"><span data-i="rdH1">Hecho en RD,</span> <span class="serif" data-i="rdH2">para la salud de RD.</span></h2>
+    <p id="rdP"></p>
+    <div class="stats">
+      <div><b class="cnt" data-to="32">32</b><span data-i="rd1">provincias</span></div>
+      <div><b class="cnt" data-to="13">13</b><span data-i="rd2">líneas de producto</span></div>
+      <div><b class="cnt" data-to="2019" data-from="2012">2019</b><span data-i="rd3">desde</span></div>
+    </div>
+  </div>
+  <span class="credit">El Portillo, Samaná</span>
+</section>
+
+<!-- BIZ: segments -->
+<section class="sec only-biz" id="instituciones">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i="sgEy">A quién servimos</span><h2><span data-i="sgH1">Para los que</span> <span class="serif" data-i="sgH2">cuidan a otros.</span></h2></div>
+    </div>
+    <div class="segs" id="segs"></div>
+  </div>
+</section>
+
+<!-- HOME: how to buy -->
+<section class="sec only-home" id="como-comprar">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div><span class="eyebrow" data-i="hwEy">Cómo comprar</span><h2><span data-i="hwH1">Así de fácil,</span> <span class="serif" data-i="hwH2">desde tu celular.</span></h2></div>
+    </div>
+    <div class="how">
+      <div><span class="n">1</span><h3 data-i="hw1h">Elige tus productos</h3><p data-i="hw1p">Por situación o directo de la tienda. Si no sabes cuál, pregúntanos por WhatsApp.</p></div>
+      <div><span class="n">2</span><h3 data-i="hw2h">Paga con tarjeta</h3><p data-i="hw2p">Pago seguro en línea con tarjeta de crédito o débito.</p></div>
+      <div><span class="n">3</span><h3 data-i="hw3h">Recíbelo en casa</h3><p data-i="hw3p">A domicilio en Santo Domingo y envío a todo el país. También puedes retirarlo en Plaza Gazcue.</p></div>
+    </div>
+    <div class="faqmini">
+      <div><b data-i="fq1q">¿Aceptan seguro médico?</b><span data-i="fq1a">Por ahora no aceptamos seguros.</span></div>
+      <div><b data-i="fq2q">¿Puedo cambiar un producto?</b><span data-i="fq2a">Tienes 7 días para solicitar un cambio o devolución vía nota de crédito.</span></div>
+      <div><b data-i="fq3q">¿Son una farmacia?</b><span data-i="fq3a">No. Vendemos equipos y materiales médicos, no medicamentos.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- BIZ: quote / HOME: checkout -->
+<section class="final" id="cotizar">
+  <img id="finalImg" src="photos/sd3.jpg" alt="">
+  <div class="wrap grid">
+    <div class="reveal">
+      <span class="eyebrow" style="color:var(--sand)" id="fEy"></span>
+      <h2 style="margin-top:14px" id="fH"></h2>
+      <p class="lede" id="fP"></p>
+      <div class="contact"><div><span>WhatsApp</span>809-876-1933</div><div><span data-i="fTel">Teléfono</span>809-692-4994</div><div><span data-i="fMail">Correo</span>ventas@insumedrd.com</div></div>
+    </div>
+    <form class="panel reveal" id="panel"></form>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <div><a class="brand" href="#top"><b>INSU<i style="font-style:normal;color:var(--cyan)">MED</i></b></a><p style="margin-top:12px;max-width:36ch" data-i="ftP">Av. Máximo Gómez #29, Plaza Gazcue, Suite 304, Santo Domingo. Lunes a viernes 8:00–5:00, sábados 8:00–12:00.</p></div>
+  <div id="ftNav"></div>
+  <div><b data-i="ft2">Síguenos</b><a href="https://www.instagram.com/insumedrd/" target="_blank" rel="noopener">Instagram @insumedrd</a></div>
+  <div class="credits" id="credits"></div>
+</div></footer>
+
+<div class="mbar" id="mbar"><a class="btn btn-cta" id="mCta" href="#cotizar"></a><a class="btn wa" href="https://wa.me/18098761933" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="20" height="20"><use href="#wa"/></svg></a></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let lang="es",mode="biz";
+try{lang=localStorage.getItem("insumed2-lang")||"es";mode=localStorage.getItem("insumed2-mode")||"biz"}catch(e){}
+const L=(es,en)=>lang==="en"?en:es;
+const fmt=n=>"RD$"+Math.round(n).toLocaleString("en-US");
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2200)}
+
+const EN={concept:"← View Concept 1",tabBiz:"For business",tabHome:"For you",
+siEy:"Shop by situation",siH1:"Who are you",siH2:"caring for?",siP:"Pick the situation and we'll show what other families buy most. Remove what you don't need and add the rest to your cart.",
+shEy:"Online store",shH1:"Best sellers",shH2:"for home.",shP:"Prices in Dominican pesos. Pay by card and get it at home.",shAll:"See all 53 products",
+mapEy:"From Santo Domingo to the whole country",mapH1:"Tap your city.",mapH2:"We deliver there.",
+stEy:"How we work",stH1:"From the port of Caucedo",stH2:"to your operating room.",cap2:"Inspection and storage",cap4:"Ready to use",
+s1h:"We import",s1p:"We bring supplies that meet international standards straight into the country. No middlemen, better prices for your institution.",s1t1:"International standards",s1t2:"No middlemen",
+s2h:"We inspect and store",s2p:"Every product arrives new, with its warranty, and waits in our Santo Domingo warehouse.",s2t1:"New products",s2t2:"Warranty",
+s3h:"We quote and ship",s3p:"Your rep confirms volume pricing and stock. We deliver in Santo Domingo and ship to all 32 provinces.",s3t1:"Volume pricing",s3t2:"32 provinces",
+s4h:"It reaches your institution",s4p:"Cash on delivery, bank transfer or company credit. Your team keeps caring for patients without interruptions.",s4t1:"Company credit",s4t2:"Cash on delivery",
+prEy:"Most ordered",prH1:"Build your quote",prH2:"as you browse.",prP:"Tap “Add” and products go into your quote. Send it with one click at the end.",prAll:"See full catalog (53 products)",
+rdEy:"A Dominican company",rdH1:"Made in the DR,",rdH2:"for the DR's health.",rd1:"provinces",rd2:"product lines",rd3:"since",
+sgEy:"Who we serve",sgH1:"For the people",sgH2:"who care for others.",
+hwEy:"How to buy",hwH1:"That easy,",hwH2:"from your phone.",hw1h:"Pick your products",hw1p:"By situation or straight from the store. Not sure which one? Ask us on WhatsApp.",hw2h:"Pay by card",hw2p:"Secure online payment with a credit or debit card.",hw3h:"Get it at home",hw3p:"Home delivery in Santo Domingo and shipping nationwide. You can also pick it up at Plaza Gazcue.",
+fq1q:"Do you accept health insurance?",fq1a:"Not at this time.",fq2q:"Can I exchange a product?",fq2a:"You have 7 days to request an exchange or return as store credit.",fq3q:"Are you a pharmacy?",fq3a:"No. We sell medical equipment and supplies, not medicine.",
+fTel:"Phone",fMail:"Email",ftP:"Av. Máximo Gómez #29, Plaza Gazcue, Suite 304, Santo Domingo. Monday to Friday 8:00–5:00, Saturday 8:00–12:00.",ft2:"Follow us"};
+const ES=new Map();$$("[data-i]").forEach(e=>ES.set(e,e.innerHTML));
+
+/* ---------- data ---------- */
+const RAW={0:["Camilla de trauma / tablero espinal","Trauma stretcher / spine board",8390,"Dotación hospitalaria","Hospital equipment"],1:["Portasueros con ruedas","IV pole with wheels",3875,"Dotación hospitalaria","Hospital equipment"],5:["Colchón antiescaras con hueco","Anti-bedsore mattress",6985,"Cuidado en casa","Home care"],7:["Aspirador nasal","Nasal aspirator",200,"Cuidado en casa","Home care"],8:["Pastillero semanal, 3 tomas","Weekly pill organizer, 3 doses",250,"Cuidado en casa","Home care"],9:["Pastillero semanal, 1 toma","Weekly pill organizer, 1 dose",150,"Cuidado en casa","Home care"],11:["Espirómetro 1 bola","Incentive spirometer, 1 ball",965,"Respiración","Breathing"],12:["Espirómetro 3 bolas","Incentive spirometer, 3 balls",485,"Respiración","Breathing"],13:["Esfigmo digital de muñeca","Wrist blood pressure monitor",1875,"Presión y azúcar","Blood pressure & sugar"],14:["Medidor de presión digital","Digital blood pressure monitor",1995,"Presión y azúcar","Blood pressure & sugar"],15:["Nebulizador electroneumático","Compressor nebulizer",2680,"Respiración","Breathing"],18:["Set de otoscopio","Otoscope set",4040,"Diagnóstico","Diagnostics"],19:["Oxímetro Premium","Premium pulse oximeter",1195,"Diagnóstico","Diagnostics"],24:["Tubo EDTA K3 5 ml, paq. 100","EDTA K3 tube 5 ml, pack of 100",778,"Laboratorio","Lab"],25:["Lancetas","Lancets",580,"Presión y azúcar","Blood pressure & sugar"],26:["Tirillas para glucómetro","Glucometer test strips",995,"Presión y azúcar","Blood pressure & sugar"],27:["Nebulizador portátil mesh","Portable mesh nebulizer",2525,"Respiración","Breathing"],29:["Guantes de nitrilo","Nitrile gloves",585,"Desechables","Disposables"],31:["Protectores de cama, paq. 10","Bed pads, pack of 10",375,"Cuidado en casa","Home care"],34:["Bajante de suero estéril, paq. 25","Sterile IV set, pack of 25",495,"Desechables","Disposables"],35:["Férulas de dedo (3)","Finger splints (3)",450,"Ortopedia","Orthopedics"],37:["Vendaje adhesivo, caja 50","Adhesive dressings, box of 50",345,"Primeros auxilios","First aid"],40:["Cuello cervical rígido","Rigid cervical collar",995,"Ortopedia","Orthopedics"],41:["Silla para ducha con brazos","Shower chair with arms",4975,"Movilidad","Mobility"],44:["Elevador de inodoro con brazos","Raised toilet seat with arms",4995,"Movilidad","Mobility"],47:["Bastón de cuatro patas","Quad cane",960,"Movilidad","Mobility"],49:["Andador con ruedas","Walker with wheels",2995,"Movilidad","Mobility"],51:["Plantilla de silicona","Silicone insoles",990,"Ortopedia","Orthopedics"],52:["Kinesiotape","Kinesiology tape",685,"Ortopedia","Orthopedics"]};
+const PR=id=>{const r=RAW[id];return {id,es:r[0],en:r[1],price:r[2],ces:r[3],cen:r[4],img:`img/p${id}.jpg`}};
+const BIZ_PRODS=[29,24,19,18,1,34,15,0].map(PR);
+const HOME_PRODS=[49,14,19,15,41,13,5,47].map(PR);
+const BEST=new Set([14,19,49]);
+const SITU=[
+ {img:"photos/hm1.jpg",es:"Un adulto mayor",en:"An older adult",des:"Movilidad, baño y descanso",den:"Mobility, bathroom and rest",ids:[49,41,44,5,31,8]},
+ {img:"photos/hm3.jpg",es:"Presión y azúcar",en:"Blood pressure & sugar",des:"Control diario en casa",den:"Daily checks at home",ids:[14,13,19,26,25,9]},
+ {img:"photos/hm5.jpg",es:"Respirar mejor",en:"Breathing better",des:"Nebulización y terapia",den:"Nebulizers and therapy",ids:[15,27,11,12,19,7]},
+ {img:"photos/or4.jpg",es:"Una lesión",en:"An injury",des:"Soporte y recuperación",den:"Support and recovery",ids:[40,35,52,47,51,37]}
+];
+const HERO={
+ biz:{
+  ey:["Para empresas · Importadores de insumos médicos · Santo Domingo","For business · Medical supply importers · Santo Domingo"],
+  h:()=>`${L("Lo que necesita tu","Everything your")} <span class="rot" id="rot"></span><br>${L("en toda la","needs, across the")} <span class="serif gold">${L("República Dominicana.","Dominican Republic.")}</span>`,
+  rot:[["hospital","hospital"],["clínica","clinic"],["laboratorio","lab"],["consultorio dental","dental office"],["consultorio","practice"]],
+  p:["Desechables, diagnóstico, dotación hospitalaria, odontología y ortopedia para hospitales, clínicas, laboratorios y consultorios. Un solo proveedor, crédito empresarial y entrega en las 32 provincias.","Disposables, diagnostics, hospital equipment, dental and orthopedic supplies for hospitals, clinics, labs and practices. One supplier, company credit and delivery to all 32 provinces."],
+  ctas:[["#cotizar",["Cotiza en 2 minutos","Get a quote in 2 minutes"],"cta"],["https://wa.me/18098761933",["WhatsApp 809-876-1933","WhatsApp 809-876-1933"],"glass"]],
+  proof:[["Importadores desde 2019","Importers since 2019"],["Entrega en las 32 provincias","Delivery to all 32 provinces"],["Crédito para empresas","Credit for companies"]],
+  slides:[["photos/or1.jpg","Quirófano","Operating room","Insumos para cirugía","Surgical supplies","60% 30%"],["photos/sd2.jpg","Santo Domingo","Santo Domingo","Ciudad Colonial","Colonial City","50% 50%"],["photos/dn1.jpg","Odontología","Dentistry","Consultorios dentales","Dental offices","50% 50%"],["photos/or2.jpg","Hospitales","Hospitals","Equipo de diagnóstico","Diagnostic equipment","50% 40%"],["photos/lab1.jpg","Laboratorios","Labs","Toma de muestras","Sample collection","50% 40%"]]
+ },
+ home:{
+  ey:["Para ti y tu familia · Tienda en línea","For you and your family · Online store"],
+  h:()=>`${L("Todo para cuidar a","Everything to care for")} <span class="rot" id="rot"></span><br><span class="serif gold">${L("en casa.","at home.")}</span>`,
+  rot:[["mamá","mom"],["papá","dad"],["los abuelos","grandma and grandpa"],["tu familia","your family"],["ti","yourself"]],
+  p:["Andadores, medidores de presión, nebulizadores, sillas de ducha y más. Compra en línea con tarjeta y recíbelo en tu casa, en Santo Domingo o en cualquier provincia.","Walkers, blood pressure monitors, nebulizers, shower chairs and more. Buy online by card and get it at home, in Santo Domingo or any province."],
+  ctas:[["#situaciones",["Comprar ahora","Shop now"],"cta"],["https://wa.me/18098761933",["Ayuda por WhatsApp","Help on WhatsApp"],"glass"]],
+  proof:[["Pago seguro con tarjeta","Secure card payment"],["7 días para cambios","7 days for exchanges"],["Envío a todo el país","Nationwide shipping"]],
+  slides:[["photos/hm1.jpg","Cuidado en casa","Home care","Para los que más quieres","For the ones you love","50% 35%"],["photos/hm3.jpg","Presión arterial","Blood pressure","Control diario en casa","Daily checks at home","50% 40%"],["photos/hm5.jpg","En familia","Family","Salud para todos","Health for everyone","50% 40%"],["photos/sa1.jpg","Samaná","Samaná","Enviamos a todo el país","We ship nationwide","50% 50%"]]
+ }
+};
+const CITIES=[
+ {k:"sd",n:"Santo Domingo",lon:-69.93,lat:18.48,km:0,hq:1,img:"photos/sd4.jpg"},
+ {k:"stg",n:"Santiago",lon:-70.70,lat:19.45,km:155},
+ {k:"pp",n:"Puerto Plata",lon:-70.69,lat:19.79,km:215},
+ {k:"lv",n:"La Vega",lon:-70.53,lat:19.22,km:125},
+ {k:"sfm",n:"San Francisco de Macorís",short:"S. F. de Macorís",lon:-70.25,lat:19.30,km:135},
+ {k:"sam",n:"Samaná",lon:-69.34,lat:19.21,km:245,img:"photos/sa1.jpg"},
+ {k:"spm",n:"San Pedro de Macorís",short:"San Pedro",lon:-69.31,lat:18.46,km:70},
+ {k:"lr",n:"La Romana",lon:-68.97,lat:18.43,km:120},
+ {k:"hig",n:"Higüey",lon:-68.71,lat:18.62,km:160,anchor:"middle",dy:30},
+ {k:"pc",n:"Punta Cana",lon:-68.37,lat:18.58,km:195,img:"photos/pc2.jpg"},
+ {k:"azua",n:"Azua",lon:-70.73,lat:18.45,km:120},
+ {k:"bar",n:"Barahona",lon:-71.10,lat:18.21,km:200},
+ {k:"ped",n:"Pedernales",lon:-71.74,lat:18.04,km:305}
+];
+const SEGS=[
+ {img:"photos/or2.jpg",es:"Hospitales",en:"Hospitals",des:"Reposición mensual para emergencias, quirófano y salas.",den:"Monthly restocking for ER, operating rooms and wards."},
+ {img:"photos/lab1.jpg",es:"Laboratorios",en:"Labs",des:"Tubos, lancetas, bisturí y guantes por caja.",den:"Tubes, lancets, blades and gloves by the box."},
+ {img:"photos/dn1.jpg",es:"Consultorios dentales",en:"Dental offices",des:"Guantes, desechables e insumos de odontología.",den:"Gloves, disposables and dental supplies."},
+ {img:"photos/or1.jpg",es:"Clínicas y especialistas",en:"Clinics and specialists",des:"Diagnóstico y desechables para cada consulta.",den:"Diagnostics and disposables for every consult."},
+ {img:"photos/port1.jpg",es:"Empresas y zonas francas",en:"Companies and free zones",des:"Dotación para dispensarios y brigadas.",den:"Supplies for company infirmaries and first-aid teams."},
+ {img:"photos/pc2.jpg",es:"Hoteles y resorts",en:"Hotels and resorts",des:"Enfermerías de hotel en Punta Cana, La Romana y Samaná.",den:"Hotel infirmaries in Punta Cana, La Romana and Samaná."}
+];
+const CREDITS=[["Cirujano en quirófano","Richard Balikian MD","CC BY 4.0","Facial_Plastic_Surgeon_in_Operating_Room.jpg"],["Cirugía","Tyler Frew MD","CC BY-SA 4.0","Plastic_Surgeon_Performing_Surgery_in_Operating_Room.jpg"],["Equipo quirúrgico","U.S. Army","Dominio público","US_Army,_Burundian_orthopedic_surgeons_work_together_in_the_operating_room_(8558549).jpg"],["Laboratorio","Happi Raphael","CC BY-SA 4.0","Testing_in_a_Medical_Lab_Laquintinie_Hospital_Douala.jpg"],["Consultorio dental","IrfanDP","CC BY-SA 4.0","Dental_chair_in_a_dentist_clinic.jpg"],["Pareja","MorningBreezeOfficial","CC BY-SA 4.0","Medium-shot-smiley-senior-couple-sitting.jpg"],["Presión en casa","Tunstall Telehealthcare","CC BY 2.0","Man_taking_blood_pressure_with_mymedic.jpg"],["Abuela y nieta","邱鈺鋒","CC BY-SA 4.0","Grandmother_and_granddaughter＿taiwan.jpg"],["Pasillo","W.carter","CC0","Corridor_on_the_second_level_-_NÄL_hospital_1.jpg"],["Puerto Multimodal Caucedo","Ernesto Rodgar","CC BY-SA 4.0","Puerto_Multimodal_Caucedo.jpg"],["Ciudad Colonial","Mariordo","CC BY-SA 4.0","Aerial_view_Ciudad_Colonial_Santo_Domingo_09_2019_0067.jpg"],["Fortaleza Ozama","Mariordo","CC BY-SA 4.0","Aerial_view_Fortaleza_Ozama_CCSD_09_2019_0081.jpg"],["Malecón","-wuppertaler","CC BY 4.0","DOM_Santo_Domingo,_Paseo_Marítimo_Malecón_0013.jpg"],["Malecón","Hansgarcia65","CC BY-SA 3.0","Malecon_de_Santo_Domingo_2013-10-01_21-33.jpg"],["El Portillo, Samaná","Danu Widjajanto","CC BY-SA 4.0","El_Portillo,_Samaná,_the_Dominican_Republic_2.jpg"],["Punta Cana","NoonIcarus","CC BY-SA 3.0","Punta_Cana_Beach_01.jpg"]];
+
+/* ---------- quote (biz) and cart (home) ---------- */
+const quote=new Map(),cart=new Map();
+const bag=()=>mode==="biz"?quote:cart;
+function cartTotal(){let t=0;cart.forEach((q,id)=>t+=q*RAW[id][2]);return t}
+function renderTray(){
+  const n=[...bag().values()].reduce((a,b)=>a+b,0);
+  $("#trayIc").setAttribute("href",mode==="biz"?"#doc":"#bag");
+  $("#trayL").textContent=mode==="biz"?L("Cotización","Quote"):L("Carrito","Cart");
+  $("#trayN").textContent=mode==="home"&&n?`${n} · ${fmt(cartTotal())}`:n;
+}
+function bump(){renderTray();const b=$("#trayN");b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump");setTimeout(()=>b.classList.remove("bump"),300);renderPanel(true);renderMbar()}
+function addTo(id,from,qty=1,silent){const m=bag();m.set(id,(m.get(id)||0)+qty);
+  if(from&&!matchMedia("(prefers-reduced-motion: reduce)").matches){const r=from.getBoundingClientRect(),t=$("#trayBtn").getBoundingClientRect(),f=document.createElement("div");f.className="fly";f.innerHTML=`<img src="img/p${id}.jpg" alt="">`;f.style.left=r.left+r.width/2-27+"px";f.style.top=r.top+r.height/2-27+"px";document.body.appendChild(f);
+    requestAnimationFrame(()=>{f.style.transform=`translate(${t.left+t.width/2-(r.left+r.width/2)}px,${t.top+t.height/2-(r.top+r.height/2)}px) scale(.3)`;f.style.opacity=".3"});setTimeout(()=>{f.remove();bump()},700)}else bump();
+  if(!silent){const p=PR(id);toast((mode==="biz"?L("Agregado a tu cotización: ","Added to your quote: "):L("En tu carrito: ","In your cart: "))+L(p.es,p.en))}}
+$("#trayBtn").onclick=()=>$("#cotizar").scrollIntoView({behavior:"smooth"});
+
+/* ---------- header ---------- */
+function renderAud(){$$("#aud button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.m===mode));const on=$(`#aud button[data-m="${mode}"]`),pill=$("#audPill");pill.style.left=on.offsetLeft+"px";pill.style.width=on.offsetWidth+"px"}
+function renderNav(){const items=mode==="biz"?[["#mapa",L("Entregas","Delivery")],["#historia",L("Cómo trabajamos","How we work")],["#productos",L("Productos","Products")],["#instituciones",L("Instituciones","Institutions")],["#cotizar",L("Contacto","Contact")]]:[["#situaciones",L("Por situación","By situation")],["#tienda",L("Tienda","Store")],["#mapa",L("Envíos","Shipping")],["#como-comprar",L("Cómo comprar","How to buy")],["#cotizar",L("Mi carrito","My cart")]];
+  $("#nav").innerHTML=items.map(([h,t])=>`<a href="${h}">${t}</a>`).join("");
+  $("#ftNav").innerHTML=`<b>${L("Explorar","Explore")}</b>`+items.map(([h,t])=>`<a href="${h}">${t}</a>`).join("<br>");
+  const c=$("#hdrCta");c.textContent=mode==="biz"?L("Cotizar ahora","Get a quote"):L("Comprar ahora","Shop now");c.href=mode==="biz"?"#cotizar":"#situaciones"}
+function renderMbar(){const c=$("#mCta");if(mode==="biz"){c.textContent=L("Cotizar ahora","Get a quote");c.href="#cotizar"}else{const n=[...cart.values()].reduce((a,b)=>a+b,0);c.textContent=n?L(`Ver carrito · ${fmt(cartTotal())}`,`View cart · ${fmt(cartTotal())}`):L("Comprar ahora","Shop now");c.href=n?"#cotizar":"#situaciones"}}
+
+/* ---------- hero ---------- */
+let slide=0,slideT,rotI=0,rotT;
+function renderHero(anim){
+  const H=HERO[mode],sw=$("#heroSwap");
+  const apply=()=>{
+    $("#heroEy").textContent=L(...H.ey);$("#heroH1").innerHTML=H.h();
+    rotI=0;$("#rot").innerHTML=H.rot.map((w,i)=>`<span class="serif ${i===0?"on":""}">${L(...w)}</span>`).join("");
+    $("#heroP").textContent=L(...H.p);
+    $("#heroCtas").innerHTML=H.ctas.map(([h,t,k])=>`<a class="btn btn-${k} magnet" href="${h}" ${h.startsWith("http")?'target="_blank" rel="noopener"':""}>${k==="glass"?'<svg width="20" height="20"><use href="#wa"/></svg>':""}${L(...t)}${k==="cta"?'<svg width="20" height="20"><use href="#arr"/></svg>':""}</a>`).join("");
+    bindMagnets();sw.classList.remove("out")};
+  if(anim){sw.classList.add("out");setTimeout(apply,300)}else apply();
+  $("#proof").innerHTML=H.proof.map(p=>`<span><i></i>${L(...p)}</span>`).join("");
+  const keep=anim?-1:slide;
+  $("#heroBg").innerHTML=H.slides.map((s,i)=>`<figure class="${i===(keep<0?0:keep)%H.slides.length?"on":""}"><img src="${s[0]}" alt="" style="object-position:${s[5]}"></figure>`).join("");
+  goSlide(keep<0?0:keep%H.slides.length);
+  clearInterval(rotT);rotT=setInterval(()=>{const s=$$("#rot span");if(!s.length)return;rotI=(rotI+1)%s.length;s.forEach((x,i)=>x.classList.toggle("on",i===rotI))},2400);
+}
+function goSlide(i){const S=HERO[mode].slides;slide=(i+S.length)%S.length;$$("#heroBg figure").forEach((f,k)=>f.classList.toggle("on",k===slide));const s=S[slide];$("#whereT").textContent=L(s[1],s[2]);$("#whereS").textContent=L(s[3],s[4]);
+  $("#heroDots").innerHTML=S.map((_,k)=>`<button type="button" aria-label="${k+1}" class="${k===slide?"on":""}"></button>`).join("");clearTimeout(slideT);slideT=setTimeout(()=>goSlide(slide+1),6000)}
+$("#heroDots").addEventListener("click",e=>{const b=e.target.closest("button");if(b)goSlide([...b.parentNode.children].indexOf(b))});
+function bindMagnets(){$$(".magnet").forEach(b=>{if(b.dataset.mg)return;b.dataset.mg=1;b.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse")return;const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.18}px,${(e.clientY-r.top-r.height/2)*.25}px)`});b.addEventListener("pointerleave",()=>b.style.transform="")})}
+
+/* ---------- ticker ---------- */
+function renderTicker(){const lead=mode==="biz"?L("Entregamos en","We deliver to"):L("Enviamos a tu casa en","We ship to your home in");const c=CITIES.map(c=>`<span>${c.n}</span>`).join("")+`<em>${L("y todas las provincias","and every province")}</em>`;$("#ticker").innerHTML=`<em>${lead}</em>`+c+`<em>${lead}</em>`+c}
+
+/* ---------- map ---------- */
+const OUT=[[-71.75,19.71],[-71.65,19.88],[-71.2,19.87],[-70.95,19.92],[-70.65,19.8],[-70.45,19.77],[-70.2,19.66],[-69.95,19.67],[-69.88,19.58],[-69.7,19.32],[-69.5,19.33],[-69.25,19.35],[-69.13,19.25],[-69.3,19.18],[-69.62,19.1],[-69.4,19.04],[-69.15,19.0],[-68.95,18.93],[-68.75,18.8],[-68.5,18.7],[-68.35,18.62],[-68.33,18.5],[-68.45,18.36],[-68.6,18.22],[-68.75,18.25],[-68.95,18.4],[-69.2,18.42],[-69.55,18.43],[-69.9,18.46],[-70.1,18.3],[-70.35,18.22],[-70.55,18.2],[-70.7,18.3],[-70.95,18.28],[-71.08,18.18],[-71.15,17.95],[-71.3,17.75],[-71.42,17.6],[-71.6,17.72],[-71.7,17.95],[-71.75,18.15],[-71.9,18.4],[-71.95,18.62],[-71.75,18.75],[-71.8,19.0],[-71.65,19.2],[-71.75,19.4]];
+const HAITI=[[-71.75,19.71],[-72.3,19.9],[-72.8,19.95],[-73.0,19.75],[-72.75,19.45],[-72.6,19.0],[-72.8,18.65],[-73.4,18.55],[-74.1,18.45],[-74.4,18.4],[-73.9,18.05],[-73.3,18.2],[-72.6,18.2],[-72.0,18.15],[-71.75,18.15],[-71.9,18.4],[-71.95,18.62],[-71.75,18.75],[-71.8,19.0],[-71.65,19.2],[-71.75,19.4]];
+const W=1000,Hh=600,X=lon=>(lon+72.25)/4.05*W,Y=lat=>(20.1-lat)/2.75*Hh;
+function smooth(pts){const p=pts.map(([a,b])=>[X(a),Y(b)]);let d=`M${p[0][0].toFixed(1)},${p[0][1].toFixed(1)}`;for(let i=0;i<p.length;i++){const p0=p[(i-1+p.length)%p.length],p1=p[i],p2=p[(i+1)%p.length],p3=p[(i+2)%p.length];const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];d+=`C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`}return d+"Z"}
+let city=CITIES[0];
+function renderMap(){
+  $("#mapP").textContent=mode==="biz"?L("Salimos desde Gazcue hacia todas las provincias. Elige una ciudad para ver cómo recibe su pedido tu institución.","We ship from Gazcue to every province. Pick a city to see how your institution gets its order."):L("Compra en línea y te lo llevamos. Elige tu ciudad para ver cómo recibes tu pedido.","Buy online and we bring it to you. Pick your city to see how you'll get your order.");
+  const hq=CITIES[0],hx=X(hq.lon),hy=Y(hq.lat);
+  const routes=CITIES.slice(1).map(c=>{const x=X(c.lon),y=Y(c.lat),mx=(hx+x)/2,my=(hy+y)/2-Math.hypot(x-hx,y-hy)*.22;return `<path class="route" data-r="${c.k}" d="M${hx},${hy} Q${mx},${my} ${x},${y}"/>`}).join("");
+  const pins=CITIES.map(c=>{const x=X(c.lon),y=Y(c.lat),lbl=c.short||c.n,anchor=c.anchor||(c.lon<-71?"start":c.lon>-68.8?"end":"middle"),dy=c.dy||(c.k==="lr"||c.k==="sd"||c.k==="spm"||c.k==="azua"?30:-16);return `<g class="city ${c.hq?"hq":""}" data-c="${c.k}" tabindex="0" role="button" aria-label="${c.n}"><circle class="halo" cx="${x}" cy="${y}" r="8"/><circle class="dot" cx="${x}" cy="${y}" r="${c.hq?10:7}"/><text x="${x+(anchor==="start"?-6:anchor==="end"?6:0)}" y="${y+dy}" text-anchor="${anchor}">${lbl}</text></g>`}).join("");
+  $("#mapbox").innerHTML=`<svg viewBox="0 0 ${W} ${Hh}" role="img" aria-label="${L("Mapa de entregas en República Dominicana","Delivery map of the Dominican Republic")}">
+    <text class="sea-lbl" x="${X(-70.6)}" y="${Y(20.0)}">${L("Océano Atlántico","Atlantic Ocean")}</text>
+    <text class="sea-lbl" x="${X(-70.1)}" y="${Y(17.75)}">${L("Mar Caribe","Caribbean Sea")}</text>
+    <path class="haiti" d="${smooth(HAITI)}"/><text x="${X(-72.95)}" y="${Y(19.2)}" style="font:700 14px var(--f-body);fill:#A8BAC4">Haití</text>
+    <path class="land" d="${smooth(OUT)}"/>${routes}${pins}</svg>
+    <div class="legend"><span><i style="background:var(--sand-ink)"></i>${L("Nuestro almacén · Gazcue","Our warehouse · Gazcue")}</span><span><i style="background:var(--cyan)"></i>${L("Ruta de envío","Shipping route")}</span><span>${L("Mapa ilustrativo","Illustrative map")}</span></div>`;
+  $("#citySel").innerHTML=CITIES.map(c=>`<option value="${c.k}" ${c===city?"selected":""}>${c.n}</option>`).join("");
+  selectCity(city.k);
+}
+function selectCity(k){
+  city=CITIES.find(c=>c.k===k);
+  $$("#mapbox .city").forEach(g=>g.classList.toggle("on",g.dataset.c===k));
+  $$("#mapbox .route").forEach(r=>r.classList.toggle("on",r.dataset.r===k));
+  $("#citySel").value=k;
+  const local=city.hq,biz=mode==="biz";
+  const rows=biz?[[L("Cómo llega","How it arrives"),local?L("Entrega a domicilio","Home delivery"):L("Envío nacional","Nationwide shipping")],[L("Pago","Payment"),L("Contra entrega, transferencia o crédito","Cash on delivery, transfer or credit")],[L("Coordinación","Scheduling"),L("Por WhatsApp con tu asesor","On WhatsApp with your rep")]]
+                 :[[L("Cómo llega","How it arrives"),local?L("A tu puerta","To your door"):L("Envío nacional","Nationwide shipping")],[L("Pago","Payment"),L("Tarjeta de crédito o débito","Credit or debit card")],[L("También","Also"),local?L("Retira en Plaza Gazcue","Pick up at Plaza Gazcue"):L("Seguimiento por WhatsApp","Tracking on WhatsApp")]];
+  $("#citycard").innerHTML=`<div class="ph">${city.img?`<img src="${city.img}" alt="">`:`<div class="noimg"></div>`}</div>
+   <div class="body"><span class="km">${local?L("Aquí está nuestro almacén","Our warehouse is here"):`≈ ${city.km} km ${L("desde Santo Domingo","from Santo Domingo")}`}</span><h3>${city.n}</h3>
+   <div class="rows">${rows.map(r=>`<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")}</div>
+   <a class="btn btn-cta" href="${biz?"#cotizar":"#situaciones"}" data-citycta="${city.k}">${biz?L(`Cotizar para ${city.n}`,`Quote for ${city.n}`):L(`Comprar con envío a ${city.n}`,`Shop with delivery to ${city.n}`)}<svg width="18" height="18"><use href="#arr"/></svg></a></div>`;
+}
+$("#mapbox").addEventListener("click",e=>{const g=e.target.closest(".city");if(g)selectCity(g.dataset.c)});
+$("#mapbox").addEventListener("mouseover",e=>{const g=e.target.closest(".city");if(g&&matchMedia("(hover:hover)").matches&&g.dataset.c!==city.k)selectCity(g.dataset.c)});
+$("#mapbox").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.closest(".city")){e.preventDefault();selectCity(e.target.closest(".city").dataset.c)}});
+$("#citySel").onchange=e=>selectCity(e.target.value);
+document.addEventListener("click",e=>{const a=e.target.closest("[data-citycta]");if(a)setTimeout(()=>{const s=$("#qCity");if(s)s.value=a.dataset.citycta},60)});
+
+/* ---------- product cards ---------- */
+function card(p,home){return `<article class="tcard reveal"><div class="glare"></div><div class="pi">${home&&BEST.has(p.id)?`<span class="badge">${L("Más vendido","Best seller")}</span>`:""}<img src="${p.img}" alt="${L(p.es,p.en)}" loading="lazy"></div><div class="pb"><span class="pc">${L(p.ces,p.cen)}</span><span class="pn">${L(p.es,p.en)}</span><div class="pr"><b>${fmt(p.price)}</b><button class="addq" type="button" data-add="${p.id}">${home?L("+ Al carrito","+ To cart"):L("+ Agregar","+ Add")}</button></div></div></article>`}
+function renderProds(){$("#prods").innerHTML=BIZ_PRODS.map(p=>card(p,false)).join("");$("#shop").innerHTML=HOME_PRODS.map(p=>card(p,true)).join("");observeReveals()}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(!b)return;addTo(+b.dataset.add,b);const t=b.textContent;b.textContent="✓";b.classList.add("done");setTimeout(()=>{b.textContent=t;b.classList.remove("done")},1200)});
+document.addEventListener("pointermove",e=>{const c=e.target.closest&&e.target.closest(".tcard");if(!c||e.pointerType!=="mouse")return;const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;c.style.transform=`rotateX(${(.5-y)*12}deg) rotateY(${(x-.5)*14}deg) translateY(-4px)`;c.style.setProperty("--gx",x*100+"%");c.style.setProperty("--gy",y*100+"%")});
+document.addEventListener("pointerout",e=>{const c=e.target.closest&&e.target.closest(".tcard");if(c&&!c.contains(e.relatedTarget))c.style.transform=""});
+
+/* ---------- home: situations ---------- */
+let situ=0;const kitOff=new Set();
+function renderSitu(){$("#situ").innerHTML=SITU.map((s,i)=>`<button type="button" data-s="${i}" aria-pressed="${i===situ}"><img src="${s.img}" alt=""><span class="tick">✓</span><b>${L(s.es,s.en)}</b><small>${L(s.des,s.den)}</small></button>`).join("");renderKit()}
+$("#situ").addEventListener("click",e=>{const b=e.target.closest("[data-s]");if(!b)return;situ=+b.dataset.s;kitOff.clear();renderSitu()});
+function renderKit(){const s=SITU[situ],items=s.ids.map(PR),sel=items.filter(p=>!kitOff.has(p.id)),tot=sel.reduce((a,p)=>a+p.price,0);
+  $("#kitbar").innerHTML=`<div class="top"><div><h3>${L("Para","For")} ${L(s.es,s.en).toLowerCase()}</h3><p>${L("Lo que más compran otras familias en esta situación. Toca un producto para quitarlo o volver a incluirlo.","What other families buy most in this situation. Tap a product to remove it or add it back.")}</p></div></div>
+  <div class="kitrow">${items.map((p,i)=>`<label class="kit ${kitOff.has(p.id)?"off":"on"}" style="animation-delay:${i*50}ms"><input type="checkbox" data-k="${p.id}" ${kitOff.has(p.id)?"":"checked"} aria-label="${L(p.es,p.en)}"><img src="${p.img}" alt=""><span>${L(p.es,p.en)}</span><b>${fmt(p.price)}</b></label>`).join("")}</div>
+  <div class="kitfoot"><div><small>${sel.length} ${L("productos","products")}</small><div class="t">${fmt(tot)}</div></div><button class="btn btn-cta" type="button" id="kitAdd" ${sel.length?"":"disabled"}>${L(`Añadir los ${sel.length} al carrito`,`Add all ${sel.length} to cart`)}<svg width="18" height="18"><use href="#arr"/></svg></button></div>`;
+  $("#kitAdd").onclick=e=>{sel.forEach(p=>addTo(p.id,null,1,true));addTo(sel[0].id,e.currentTarget,0,true);toast(L(`${sel.length} productos en tu carrito · ${fmt(cartTotal())}`,`${sel.length} products in your cart · ${fmt(cartTotal())}`))}}
+$("#kitbar").addEventListener("change",e=>{const c=e.target.closest("[data-k]");if(!c)return;const id=+c.dataset.k;c.checked?kitOff.delete(id):kitOff.add(id);renderKit()});
+
+/* ---------- segments ---------- */
+function renderSegs(){$("#segs").innerHTML=SEGS.map(s=>`<a class="seg reveal" href="#cotizar"><img src="${s.img}" alt="" loading="lazy"><span class="go"><svg width="18" height="18"><use href="#arr"/></svg></span><h3>${L(s.es,s.en)}</h3><p>${L(s.des,s.den)}</p></a>`).join("");observeReveals()}
+
+/* ---------- final panel ---------- */
+function renderFinalCopy(){const biz=mode==="biz";
+  $("#finalImg").src=biz?"photos/sd3.jpg":"photos/hm1.jpg";
+  $("#fEy").textContent=biz?L("Cotiza hoy","Get a quote today"):L("Tu carrito","Your cart");
+  $("#fH").innerHTML=biz?`${L("Tu próxima compra,","Your next order,")} <span class="serif">${L("resuelta en minutos.","sorted in minutes.")}</span>`:`${L("Listo para","Ready to")} <span class="serif">${L("llegar a tu casa.","reach your home.")}</span>`;
+  $("#fP").textContent=biz?L("Envíanos tu lista y un asesor te responde con precios por volumen, disponibilidad y condiciones de crédito.","Send us your list and a rep replies with volume pricing, availability and credit terms."):L("Revisa tu pedido, elige dónde lo recibes y paga con tarjeta. ¿Dudas? Escríbenos por WhatsApp.","Review your order, choose where to get it and pay by card. Questions? Message us on WhatsApp.");
+  $("#rdP").textContent=biz?L("Conocemos el país: sus hospitales, sus clínicas y sus carreteras. Desde Gazcue atendemos a instituciones de salud de Pedernales a Samaná.","We know the country: its hospitals, its clinics and its roads. From Gazcue we serve healthcare institutions from Pedernales to Samaná."):L("Somos dominicanos y cuidamos a familias dominicanas. Desde Gazcue enviamos a casas de Pedernales a Samaná.","We're Dominican and we care for Dominican families. From Gazcue we ship to homes from Pedernales to Samaná.");
+}
+function cityOptions(){return CITIES.map(c=>`<option value="${c.k}" ${c===city?"selected":""}>${c.n}</option>`).join("")+`<option value="otra">${L("Otra provincia","Other province")}</option>`}
+function renderPanel(partial){
+  const p=$("#panel");
+  if(mode==="biz"){
+    if(partial&&$("#chips")){renderChips();return}
+    p.innerHTML=`<h3>${L("Solicita tu cotización","Request your quote")}</h3><p class="sub">${L("Respuesta de un asesor por WhatsApp o correo.","A rep replies by WhatsApp or email.")}</p>
+    <div class="f">
+      <label>${L("Nombre","Name")}<input id="qN" required autocomplete="name"></label>
+      <label>${L("Institución","Institution")}<input id="qI" autocomplete="organization"></label>
+      <label>WhatsApp<input id="qW" required inputmode="tel" autocomplete="tel"></label>
+      <label>${L("Ciudad","City")}<select id="qCity">${cityOptions()}</select></label>
+      <label class="full">${L("Productos en tu cotización","Products in your quote")}<div class="chips" id="chips"></div></label>
+      <label class="full">${L("¿Qué más necesitas?","What else do you need?")}<textarea id="qT" rows="3" placeholder="${L("Ej.: 50 cajas de guantes de nitrilo talla M cada mes","E.g. 50 boxes of size M nitrile gloves every month")}"></textarea></label>
+    </div>
+    <button class="btn btn-cta" type="submit">${L("Enviar solicitud","Send request")}<svg width="18" height="18"><use href="#arr"/></svg></button>`;
+    renderChips();
+  }else{
+    const lines=[...cart],tot=cartTotal(),goal=5000;
+    const cityVal=$("#qCity")?.value||city.k;
+    p.innerHTML=`<h3>${L("Tu pedido","Your order")}</h3><p class="sub">${lines.length?L("Ajusta cantidades antes de pagar.","Adjust quantities before you pay."):L("Tu carrito está vacío. Empieza por una situación o la tienda.","Your cart is empty. Start with a situation or the store.")}</p>
+    ${lines.map(([id,q])=>{const x=PR(id);return `<div class="cline"><img src="${x.img}" alt=""><div><div class="nm">${L(x.es,x.en)}</div><div class="st"><button type="button" data-cq="${id}" data-v="-1" aria-label="-">−</button><span class="mono">${q}</span><button type="button" data-cq="${id}" data-v="1" aria-label="+">+</button></div></div><b>${fmt(q*x.price)}</b></div>`}).join("")}
+    ${lines.length?`<div class="ship-bar">${tot>=goal?L("Envío gratis en Santo Domingo","Free delivery in Santo Domingo"):L(`Te faltan ${fmt(goal-tot)} para envío gratis en Santo Domingo`,`${fmt(goal-tot)} away from free delivery in Santo Domingo`)} <span style="color:#6B3FD1">(${L("ejemplo","example")})</span><div class="bar"><i style="width:${Math.min(100,tot/goal*100)}%"></i></div></div>`:""}
+    <div class="f" style="margin-top:14px"><label class="full">${L("¿Dónde lo recibes?","Where should we deliver?")}<select id="qCity">${cityOptions()}</select></label></div>
+    <div class="totrow"><span style="font-weight:800">Total</span><b>${fmt(tot)}</b></div>
+    <button class="btn btn-cta wide" type="submit" ${lines.length?"":"disabled"}>${L("Pagar con tarjeta","Pay by card")}<svg width="18" height="18"><use href="#arr"/></svg></button>
+    <div class="paybadges"><span>VISA</span><span>Mastercard</span><span>${L("Pago seguro","Secure payment")}</span><span>${L("7 días para cambios","7-day exchanges")}</span></div>`;
+    const s=$("#qCity");if(s)s.value=cityVal;
+  }
+}
+function renderChips(){const c=$("#chips");if(!c)return;c.innerHTML=quote.size?[...quote].map(([id,q])=>{const p=PR(id);return `<span>${L(p.es,p.en)} × ${q}<button type="button" data-rm="${id}" aria-label="×">×</button></span>`}).join(""):`<em>${L("Agrega productos desde “Lo más pedido”, o escríbelos abajo.","Add products from “Most ordered”, or type them below.")}</em>`}
+$("#panel").addEventListener("click",e=>{const r=e.target.closest("[data-rm]");if(r){quote.delete(+r.dataset.rm);bump()}const c=e.target.closest("[data-cq]");if(c){const id=+c.dataset.cq,q=(cart.get(id)||0)+(+c.dataset.v);q>0?cart.set(id,q):cart.delete(id);bump()}});
+$("#panel").addEventListener("submit",e=>{e.preventDefault();const biz=mode==="biz";const n=(biz&&$("#qN").value)||"";
+  $("#panel").innerHTML=`<div class="ok"><div class="check">✓</div><h3>${biz?L("¡Listo","Done")+(n?`, ${n.split(" ")[0]}`:"")+"!":L("¡Pedido listo para pagar!","Order ready to pay!")}</h3><p style="color:var(--muted);max-width:34ch">${biz?L("En la web real, tu solicitud llegaría a ventas y al CRM de Insumed, y un asesor te escribiría por WhatsApp.","On the real site, your request would reach Insumed sales and the CRM, and a rep would message you on WhatsApp."):L("En la web real, aquí abriría el pago seguro con tarjeta y recibirías la confirmación por correo y WhatsApp.","On the real site, secure card checkout would open here and you'd get confirmation by email and WhatsApp.")}</p><button class="btn btn-ghost" type="button" id="again">${L("Volver","Back")}</button></div>`;
+  $("#again").onclick=()=>renderPanel()});
+
+/* ---------- credits ---------- */
+function renderCredits(){$("#credits").innerHTML=`${L("Fotos de Wikimedia Commons","Photos from Wikimedia Commons")}: `+CREDITS.map(c=>`<a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(c[3])}" target="_blank" rel="noopener">${c[0]}</a> (${c[1]}, ${c[2]})`).join(" · ")+`. ${L("Productos y precios: insumedrd.com. Mockup de diseño, no es la web real.","Products and prices: insumedrd.com. Design mockup, not the live site.")}`}
+
+/* ---------- scroll effects ---------- */
+const hdr=$("#hdr"),prog=$("#progress"),mbar=$("#mbar"),bandBg=$("#bandBg");
+function onScroll(){const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;prog.style.width=(h>0?y/h*100:0)+"%";hdr.classList.toggle("solid",y>innerHeight*.6);mbar.classList.toggle("show",y>innerHeight*.8);
+  const r=bandBg.parentNode.getBoundingClientRect();if(r.bottom>0&&r.top<innerHeight)bandBg.style.transform=`translateY(${(r.top-innerHeight/2)*-.12}px)`}
+addEventListener("scroll",onScroll,{passive:true});
+addEventListener("resize",renderAud);
+if("ResizeObserver" in window){const rz=new ResizeObserver(()=>renderAud());$$("#aud button").forEach(b=>rz.observe(b))}
+if("IntersectionObserver" in window){
+  const so=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const i=$$(".step").indexOf(en.target);$$(".step").forEach((s,k)=>s.classList.toggle("on",k===i));$$("#stage figure").forEach((f,k)=>f.classList.toggle("on",k===i));$("#stCount").textContent=`0${i+1} / 04`}),{rootMargin:"-45% 0px -45% 0px"});
+  $$(".step").forEach(s=>so.observe(s));
+  const co=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;co.unobserve(en.target);$$(".band .cnt").forEach(c=>{const to=+c.dataset.to,from=+(c.dataset.from||0),t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/1300);c.textContent=Math.round(from+(to-from)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}),{threshold:.4});
+  co.observe($(".band .stats"));
+}
+let ro;function observeReveals(){if(!("IntersectionObserver" in window)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;ro=ro||new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){en.target.classList.remove("pre");ro.unobserve(en.target)}}),{rootMargin:"0px 0px -8% 0px"});
+  $$(".reveal:not([data-seen])").forEach((el,i)=>{el.dataset.seen=1;const r=el.getBoundingClientRect();if(r.top>innerHeight&&r.height>0){el.classList.add("pre");el.style.transitionDelay=(i%4)*70+"ms";ro.observe(el)}})}
+
+/* ---------- mode + language ---------- */
+function setMode(m,anim){mode=m;document.body.dataset.mode=m;try{localStorage.setItem("insumed2-mode",m)}catch(e){}
+  renderAud();renderNav();renderHero(anim);renderTicker();renderMap();renderFinalCopy();renderPanel();renderTray();renderMbar();observeReveals();
+  if(anim)window.scrollTo({top:0,behavior:"smooth"})}
+$$("#aud button").forEach(b=>b.onclick=()=>{if(b.dataset.m!==mode)setMode(b.dataset.m,true)});
+function applyLang(){document.documentElement.lang=lang;$$(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===lang));
+  ES.forEach((es,el)=>{const k=el.dataset.i;el.innerHTML=lang==="en"&&EN[k]?EN[k]:es});
+  renderProds();renderSegs();renderSitu();renderCredits();setMode(mode,false)}
+$$(".lang button").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;try{localStorage.setItem("insumed2-lang",lang)}catch(e){}applyLang()});
+applyLang();onScroll();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(renderAud);
+</script>
+</body>
+</html>

@@ -1215,5 +1215,8 @@ $("#notesBtn").onclick=e=>{const on=document.body.classList.toggle("notes-on");e
 applyLang();route();setInterval(renderHours,60000);
 </script>
 
+<style>.concept-switch{position:fixed;left:max(14px,env(safe-area-inset-left,0px));bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:75;display:inline-flex;align-items:center;gap:8px;background:#6B3FD1;color:#fff;border-radius:999px;padding:10px 16px;font:800 .82rem/1 Manrope,system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 26px rgb(107 63 209/.35);transition:transform .2s}.concept-switch:hover{transform:translateY(-2px)}body.has-sticky .concept-switch{bottom:calc(86px + env(safe-area-inset-bottom,0px))}</style>
+<a class="concept-switch" href="concept-2/" id="conceptSwitch">Ver Concepto 2 →</a>
+<script>(function(){var a=document.getElementById("conceptSwitch");function t(){var en=document.documentElement.lang==="en";a.textContent=en?"View Concept 2 →":"Ver Concepto 2 →"}t();new MutationObserver(t).observe(document.documentElement,{attributes:true,attributeFilter:["lang"]})})()</script>
 </body>
 </html>
